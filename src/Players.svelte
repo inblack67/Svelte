@@ -1,18 +1,17 @@
 <script>
   import PlayerItem from './PlayerItem.svelte';
-  import axios from 'axios';
-  let players = [];
-  const getPlayers = async () => {
-    const res = await axios(`https://jsonplaceholder.typicode.com/users`);
-    players = [...players, ...res.data];
+  export let players;
+  import { createEventDispatcher } from 'svelte';
+  const dispatch = createEventDispatcher();
+  const deletePlayer = (e) => {
+    dispatch('deletePlayer', e.detail);
   };
-  getPlayers();
 </script>
 
 <ul class="collection-item">
   {#if players.length > 0}
     {#each players as player}
-      <PlayerItem {player} />
+      <PlayerItem {player} on:deletePlayer={deletePlayer} />
     {/each}
   {/if}
 </ul>
